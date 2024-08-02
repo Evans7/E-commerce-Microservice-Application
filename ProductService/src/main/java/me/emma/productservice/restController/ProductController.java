@@ -34,6 +34,15 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
+    @PutMapping("/product")
+    public Product updateProduct(@RequestBody Product product) {
+        return productService.updateProduct(product);
+    }
+
+    @PutMapping("/product/update")
+    public Product updateProductStock(@RequestParam Long id, @RequestParam Integer quantity) {
+        return productService.updateProductStock(id, quantity);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
