@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/E_Commerce_MicroService
+    username: root
+    password: Reinamimi
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
