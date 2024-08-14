@@ -1,7 +1,8 @@
 package me.emma.orderservice.service;
 
+import me.emma.orderservice.constant.OrderConstant;
 import me.emma.orderservice.feign.ProductClient;
-import me.emma.orderservice.pojo.entity.CartItem;
+import me.emma.orderservice.pojo.dto.CartItem;
 import me.emma.orderservice.pojo.entity.OrderItem;
 import me.emma.orderservice.pojo.entity.Orders;
 import me.emma.orderservice.pojo.dto.Product;
@@ -24,16 +25,17 @@ public class OrderService {
         this.productClient = productClient;
     }
 
-    public void addProductToCart(Long productId, Integer quantity) {
+    public void addProductToCart(Long productId) {
         Product product = productClient.getProductById(productId);
+
         // check if the product is in the cart, if it is, add one more quantity
         if (cart.containsKey(productId)) {
             CartItem cartItem = cart.get(productId);
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartItem.setQuantity(cartItem.getQuantity() + OrderConstant.QUANTITY);
         } else {
             CartItem cartItem = new CartItem();
             cartItem.setProduct(product);
-            cartItem.setQuantity(quantity);
+            cartItem.setQuantity(OrderConstant.QUANTITY);
             cart.put(productId, cartItem);
         }
     }
@@ -48,7 +50,7 @@ public class OrderService {
         if (cart.containsKey(productId)) {
             CartItem cartItem = cart.get(productId);
             // click + button to add one more quantity
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartItem.setQuantity(cartItem.getQuantity() + OrderConstant.QUANTITY);
         }
     }
 

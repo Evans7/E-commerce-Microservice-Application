@@ -2,7 +2,8 @@ package me.emma.orderservice.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.emma.orderservice.pojo.entity.CartItem;
+import me.emma.orderservice.pojo.dto.Cart;
+import me.emma.orderservice.pojo.dto.CartItem;
 import me.emma.orderservice.pojo.entity.Orders;
 import me.emma.orderservice.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,9 @@ public class OrderController {
 
 
     @PostMapping("/cart")
-    public ResponseEntity addProductToCart(@RequestParam Long productId, @RequestParam Integer quantity) {
+    public ResponseEntity addProductToCart(@RequestParam Long productId) {
         log.info("Adding product to cart {}", productId);
-        orderService.addProductToCart(productId, quantity);
+        orderService.addProductToCart(productId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -49,7 +50,7 @@ public class OrderController {
     }
 
     @PostMapping("/order/checkout")
-    public ResponseEntity<Orders> checkout() {
+    public ResponseEntity<Orders> checkout(@RequestBody Cart cart) {
         log.info("Checking out cart");
         Orders order = orderService.checkout();
         return new ResponseEntity<>(order, HttpStatus.OK);

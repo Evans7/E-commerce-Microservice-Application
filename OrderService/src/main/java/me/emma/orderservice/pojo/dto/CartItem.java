@@ -1,9 +1,8 @@
-package me.emma.orderservice.pojo.entity;
+package me.emma.orderservice.pojo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.emma.orderservice.pojo.dto.Product;
 
 @Data
 @AllArgsConstructor
