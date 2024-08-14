@@ -39,7 +39,7 @@ public class ProductController {
         return productService.updateProduct(product);
     }
 
-    @PutMapping("/product/update")
+    @PutMapping("/product/updateStock")
     public Product updateProductStock(@RequestParam Long id, @RequestParam Integer quantity) {
         return productService.updateProductStock(id, quantity);
     }
