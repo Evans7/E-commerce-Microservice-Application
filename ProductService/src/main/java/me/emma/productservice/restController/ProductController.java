@@ -33,15 +33,8 @@ public class ProductController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Product createProduct(@RequestPart("product") Product product,
-                                 @RequestPart("file") MultipartFile file) {
-        log.info("Creating product {}", product);
-        log.info("File name: {}", file.getOriginalFilename());
-
-        String imageUrl = productService.getProductImageUrl(file);
-        log.info("Image url: {}", imageUrl);
-        product.setImage(imageUrl);
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
@@ -52,10 +45,11 @@ public class ProductController {
         return imageUrl;
     }
 
-    @PostMapping("/upload")
-    public String uploadFile(@RequestPart("file") MultipartFile file) {
-        return "File uploaded: " + file.getOriginalFilename();
-    }
+//
+//    @PostMapping("/upload")
+//    public String uploadFile(@RequestPart("file") MultipartFile file) {
+//        return productService.getProductImageUrl(file);
+//    }
 
     @PutMapping("/product")
     public Product updateProduct(@RequestBody Product product) {

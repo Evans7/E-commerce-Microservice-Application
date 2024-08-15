@@ -11,6 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient("image-service")
 public interface ImageClient {
 
-    @PostMapping(value = "api/v1/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<String> upload(@RequestPart("file") MultipartFile file);
 }
