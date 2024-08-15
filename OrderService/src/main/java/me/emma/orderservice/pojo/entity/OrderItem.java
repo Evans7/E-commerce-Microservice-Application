@@ -1,5 +1,6 @@
 package me.emma.orderservice.pojo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name="orderId")
+    @JsonBackReference
     private Orders orders;
 
     private Long productId;
