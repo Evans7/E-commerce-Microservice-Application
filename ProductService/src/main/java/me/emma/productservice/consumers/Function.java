@@ -19,12 +19,12 @@ public class Function {
 
     private final ProductService productService;
 
-    @Bean
-    public Consumer<Long> productResponse() {
-        return (Long id) -> {
-            System.out.println("Received product ID to delete image from image service: " + id);
-        };
-    }
+//    @Bean
+//    public Consumer<Long> productResponse() {
+//        return (Long id) -> {
+//            System.out.println("Received product ID to delete image from image service: " + id);
+//        };
+//    }
 
     @Bean
     public Consumer<OrderPlacedEvent> orderPlacedEventConsumer() {

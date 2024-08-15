@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.emma.productservice.entity.Product;
 import me.emma.productservice.feign.ImageClient;
 import me.emma.productservice.repository.ProductRepository;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ImageClient imageClient;
+    private final StreamBridge streamBridge;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -39,7 +41,13 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            String imageUrl = product.getImage();
+            streamBridge.send("deleteImage-out-0", imageUrl);
+            log.info("deleteImageEvent sent to Kafka: {}", imageUrl);
+            productRepository.deleteById(id);
+        }
     }
 
     public Product updateProduct(Product product) {
