@@ -1,1 +1,29 @@
-<p>products works!</p>
+<section>
+    <div class="search-container">
+      <!-- <input 
+        type="text" 
+        [formControl]="searchControl" 
+        placeholder="Search events by keyword..."
+        class="search-input"
+      /> -->
+    </div>
+<div class="event-container">
+ 
+
+    @for(p of products; track p.id){
+        <div class="event-card">
+            <img [src]="p.image" alt="{{ p.name }}" class="event-image"  width="300"
+            height="200">
+            <div class="event-details">
+              <h3>{{ p.name }}</h3>
+              <p> {{ p.description }}</p>
+              <p> price: {{ p.price }}</p>
+              
+            </div>
+          </div>
+}
+ 
+
+  </div>
+
+</section>
