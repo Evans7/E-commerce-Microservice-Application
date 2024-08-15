@@ -1,82 +1,62 @@
 package me.emma.orderservice.service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.emma.orderservice.feign.ProductClient;
-import me.emma.orderservice.pojo.entity.CartItem;
+import me.emma.orderservice.pojo.dto.CartItem;
+import me.emma.orderservice.pojo.dto.OrderPlacedEvent;
+import me.emma.orderservice.pojo.dto.Product;
 import me.emma.orderservice.pojo.entity.OrderItem;
 import me.emma.orderservice.pojo.entity.Orders;
-import me.emma.orderservice.pojo.dto.Product;
+import me.emma.orderservice.repository.OrderItemRepository;
+import me.emma.orderservice.repository.OrdersRepository;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class OrderService {
-    private Map<Long, CartItem> cart = new HashMap<>();
+
     private final ProductClient productClient;
+    private final OrderItemRepository orderItemRepository;
+    private final OrdersRepository ordersRepository;
+    private final StreamBridge streamBridge;
 
-    public OrderService(ProductClient productClient) {
-        this.productClient = productClient;
-    }
-
-    public void addProductToCart(Long productId, Integer quantity) {
-        Product product = productClient.getProductById(productId);
-        // check if the product is in the cart, if it is, add one more quantity
-        if (cart.containsKey(productId)) {
-            CartItem cartItem = cart.get(productId);
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-        } else {
-            CartItem cartItem = new CartItem();
-            cartItem.setProduct(product);
-            cartItem.setQuantity(quantity);
-            cart.put(productId, cartItem);
-        }
-    }
-
-    public void removeProductFromCart(Long productId) {
-        if (cart.containsKey(productId)) {
-            cart.remove(productId);
-        }
-    }
-
-    public void updateProductQuantity(Long productId) {
-        if (cart.containsKey(productId)) {
-            CartItem cartItem = cart.get(productId);
-            // click + button to add one more quantity
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-        }
-    }
-
-
-    public List<CartItem> getCartItems() {
-        return new ArrayList<>(cart.values());
-    }
-
-    @Transactional
-    public Orders checkout() {
+    public Orders createOrder(List<CartItem> items) {
         Orders orders = new Orders();
         orders.setOrderDate(LocalDateTime.now());
         BigDecimal totalPrice = BigDecimal.ZERO;
+        orders = ordersRepository.save(orders);
         List<OrderItem> orderItems = new ArrayList<>();
-        for (CartItem cartItem : getCartItems()) {
+        for (CartItem item : items) {
             OrderItem orderItem = new OrderItem();
+            Product product = productClient.getProductById(item.getProductId());
             orderItem.setOrders(orders);
-            orderItem.setProductId(cartItem.getProduct().getProductId());
-            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setProductId(item.getProductId());
+            orderItem.setQuantity(item.getQuantity());
+            orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
-            // calculate total price
-            totalPrice = totalPrice.add(cartItem.getProduct().getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
-
+            log.info("product price: {}", product.getPrice());
+            totalPrice = totalPrice.add(product.getPrice().multiply(new BigDecimal(item.getQuantity())));
         }
+        log.info("total price: {}", totalPrice);
         orders.setTotalPrice(totalPrice);
         orders.setOrderItems(orderItems);
-        cart.clear();
-        return orders;
+        OrderPlacedEvent event = new OrderPlacedEvent(orders.getOrderId(), items);
+        streamBridge.send("orderPlaced-out-0", event);
+        log.info("OrderPlacedEvent sent to Kafka: {}", event);
+        return ordersRepository.save(orders);
 
+    }
+
+    public List<Orders> getAllOrders() {
+        return ordersRepository.findAll();
     }
 }
