@@ -1,4 +1,4 @@
-package me.emma.orderservice.pojo.dto;
+package me.emma.productservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
