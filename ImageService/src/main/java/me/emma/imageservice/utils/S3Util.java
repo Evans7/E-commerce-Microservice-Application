@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,12 @@ public class S3Util {
             log.error("IOException: " + ioe.getMessage());
             throw new RuntimeException("Error uploading file to S3");
         }
+    }
+
+    public void deleteImage(String image) {
+        DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, image);
+        s3Client.deleteObject(deleteObjectRequest);
+        log.info("Deleted image {}", image);
     }
 
 

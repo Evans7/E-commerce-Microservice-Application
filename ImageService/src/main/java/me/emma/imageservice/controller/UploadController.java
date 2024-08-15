@@ -6,23 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import me.emma.imageservice.utils.S3Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/upload")
+@RequestMapping()
 @Slf4j
 @AllArgsConstructor
 public class UploadController {
 
     private S3Util s3Util;
 
-    @PostMapping
+    @PostMapping("/upload")
     public ResponseEntity<String> upload(MultipartFile file) {
         log.info("upload file: {}", file.getOriginalFilename());
 
@@ -41,5 +39,12 @@ public class UploadController {
             return new ResponseEntity<>("Failed to upload", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @DeleteMapping("/delete/{image}")
+    public ResponseEntity<String> deleteImage(@PathVariable String image) {
+        log.info("delete image: {}", image);
+        s3Util.deleteImage(image);
+        return new ResponseEntity<>("Image deleted successfully", HttpStatus.OK);
     }
 }
