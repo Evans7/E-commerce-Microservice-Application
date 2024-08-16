@@ -26,6 +26,7 @@ public class Function {
         };
     }
 
+
     @Bean
     public Consumer<OrderPlacedEvent> orderPlacedEventConsumer() {
         log.info("OrderPlacedEventConsumer bean registered");

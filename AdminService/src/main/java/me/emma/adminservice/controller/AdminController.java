@@ -35,6 +35,7 @@ public class AdminController {
 
     @PostMapping("/product")
     public Product createAdminProduct(@RequestBody Product product) {
+
         return adminService.createProduct(product);
     }
 
