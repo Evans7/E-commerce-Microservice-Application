@@ -3,9 +3,11 @@ package me.emma.productservice.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.emma.productservice.entity.Product;
+import me.emma.productservice.entity.ProductDTO;
 import me.emma.productservice.feign.ImageClient;
 import me.emma.productservice.repository.ProductRepository;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,11 +32,11 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public String getProductImageUrl(MultipartFile imageFile) {
-        log.info("Get image url");
-        ResponseEntity<String> response = imageClient.upload(imageFile);
-        return response.getBody();
-    }
+//    public String getProductImageUrl(MultipartFile imageFile) {
+//        log.info("Get image url");
+//        ResponseEntity<String> response = imageClient.upload(imageFile);
+//        return response.getBody();
+//    }
 
     public Product createProduct(Product product) {
         return productRepository.save(product);

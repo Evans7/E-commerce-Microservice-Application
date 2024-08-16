@@ -61,6 +61,22 @@ public class GatewayConfig {
                                         .setFallbackUri("forward:/fallback"))
                         )
                         .uri("lb://product-service"))
+
+                .route("images", r -> r.path("/api/images")
+                        .filters(f -> f.rewritePath("/api/images", "/images")
+                                .circuitBreaker(config -> config.setName("productsCircuitBreaker")
+                                        .setFallbackUri("forward:/fallback")))
+                        .uri("lb://image-service"))
+
+                .route("images", r -> r.path("/api/images/**")
+                        .filters(f->f.rewritePath("/api/(?<service>.*)/(?<remaining>.*)",
+                                        "/${service}/${remaining}")
+                                .circuitBreaker(config -> config.setName("productsCircuitBreaker")
+                                        .setFallbackUri("forward:/fallback"))
+                        )
+                        .uri("lb://image-service"))
+
+
                 .build();
     }
 

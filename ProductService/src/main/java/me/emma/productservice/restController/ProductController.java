@@ -3,6 +3,7 @@ package me.emma.productservice.restController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.emma.productservice.entity.Product;
+import me.emma.productservice.entity.ProductDTO;
 import me.emma.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,17 +34,18 @@ public class ProductController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Product createProduct(@RequestBody Product product) {
+
         return productService.createProduct(product);
     }
 
-    @PostMapping("/imageUpload")
-    public String uploadProductImage(MultipartFile file) {
-        String imageUrl = productService.getProductImageUrl(file);
-        log.info("Image url: {}", imageUrl);
-        return imageUrl;
-    }
+//    @PostMapping("/imageUpload")
+//    public String uploadProductImage(MultipartFile file) {
+//        String imageUrl = productService.getProductImageUrl(file);
+//        log.info("Image url: {}", imageUrl);
+//        return imageUrl;
+//    }
 
 //
 //    @PostMapping("/upload")
