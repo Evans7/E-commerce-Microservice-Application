@@ -1,5 +1,6 @@
 package me.emma.adminservice.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.emma.adminservice.feign.ProductClient;
 import me.emma.adminservice.pojo.dto.Product;
@@ -13,14 +14,12 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AdminService {
 
     private final ProductClient productClient;
-    StreamBridge streamBridge;
+    private final StreamBridge streamBridge;
 
-    public AdminService(ProductClient productClient) {
-        this.productClient = productClient;
-    }
 
     public List<Product> getProducts() {
         return productClient.getAllProducts();

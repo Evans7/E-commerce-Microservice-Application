@@ -4,16 +4,42 @@ services:
     container_name: mysql-container
     restart: always
     environment:
-      MYSQL_DATABASE: movie_db
-      MYSQL_USER: emma
+      MYSQL_DATABASE: E_Commerce_MicroService
+      MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: root
     ports:
-        - "3307:3306"
+      - "3307:3306"
     volumes:
-        - my-mysql:/var/lib/mysql
+      - my-mysql:/var/lib/mysql
     networks:
-        - internal_network
+      - internal_network
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper-container
+    ports:
+      - "2181:2181"
+    networks:
+      - internal_network
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka-container
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_NAME: INSIDE
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      - internal_network
 
   gateway-service:
     image: group2/gateway-service:0.0.1
@@ -27,6 +53,7 @@ services:
       - order-service
       - admin-service
       - image-service
+      - kafka
     networks:
       - internal_network
 
@@ -39,7 +66,7 @@ services:
       - internal_network
 
   admin-service:
-    image: group2/movie-service:0.0.1
+    image: group2/admin-service:0.0.1
     container_name: admin-container
     depends_on:
       - mysql
@@ -62,6 +89,7 @@ services:
     depends_on:
       - mysql
       - eureka-service
+      - kafka
     networks:
       - internal_network
 
@@ -73,7 +101,6 @@ services:
       - eureka-service
     networks:
       - internal_network
-
 
 volumes:
   my-mysql:

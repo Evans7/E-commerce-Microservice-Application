@@ -34,7 +34,7 @@ public class ProductController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping()
     public Product createProduct(@RequestBody Product product) {
 
         return productService.createProduct(product);

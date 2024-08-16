@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.emma</groupId>
     <artifactId>EurekaService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>eureka-service</name>
     <description>EurekaService</description>
     <url/>
