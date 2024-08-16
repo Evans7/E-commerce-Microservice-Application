@@ -1,0 +1,84 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_DATABASE: movie_db
+      MYSQL_USER: emma
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+    ports:
+        - "3307:3306"
+    volumes:
+        - my-mysql:/var/lib/mysql
+    networks:
+        - internal_network
+
+  gateway-service:
+    image: group2/gateway-service:0.0.1
+    container_name: edge-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - eureka-service
+      - product-service
+      - order-service
+      - admin-service
+      - image-service
+    networks:
+      - internal_network
+
+  eureka-service:
+    image: group2/eureka-service:0.0.1
+    container_name: eureka-container
+    ports:
+      - "8761:8761"
+    networks:
+      - internal_network
+
+  admin-service:
+    image: group2/movie-service:0.0.1
+    container_name: admin-container
+    depends_on:
+      - mysql
+      - eureka-service
+    networks:
+      - internal_network
+
+  product-service:
+    image: group2/product-service:0.0.1
+    container_name: product-container
+    depends_on:
+      - mysql
+      - eureka-service
+    networks:
+      - internal_network
+
+  order-service:
+    image: group2/order-service:0.0.1
+    container_name: order-container
+    depends_on:
+      - mysql
+      - eureka-service
+    networks:
+      - internal_network
+
+  image-service:
+    image: group2/image-service:0.0.1
+    container_name: image-container
+    depends_on:
+      - mysql
+      - eureka-service
+    networks:
+      - internal_network
+
+
+volumes:
+  my-mysql:
+
+networks:
+  internal_network:
+    external: false
+    name: my-network

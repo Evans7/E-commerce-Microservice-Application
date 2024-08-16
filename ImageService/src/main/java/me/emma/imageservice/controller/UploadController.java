@@ -21,7 +21,7 @@ public class UploadController {
     private S3Util s3Util;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(MultipartFile file) {
+    public String upload(MultipartFile file) {
         log.info("upload file: {}", file.getOriginalFilename());
 
         try {
@@ -32,11 +32,11 @@ public class UploadController {
             // create object name
             String objectName = UUID.randomUUID().toString() + extension;
             String filePath = s3Util.upload(file, objectName);
-            return new ResponseEntity<>(filePath, HttpStatus.OK);
+            return filePath;
 
         } catch (Exception e) {
             log.error("upload file error", e);
-            return new ResponseEntity<>("Failed to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+            return e.getMessage();
         }
 
     }

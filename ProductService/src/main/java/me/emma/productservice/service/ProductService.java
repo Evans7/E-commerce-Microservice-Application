@@ -1,18 +1,26 @@
 package me.emma.productservice.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.emma.productservice.entity.Product;
+import me.emma.productservice.entity.ProductDTO;
+import me.emma.productservice.feign.ImageClient;
 import me.emma.productservice.repository.ProductRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ImageClient imageClient;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -22,7 +30,18 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public Product createProduct(Product product) {
+//    public String getProductImageUrl(MultipartFile imageFile) {
+//        log.info("Get image url");
+//        ResponseEntity<String> response = imageClient.upload(imageFile);
+//        return response.getBody();
+//    }
+
+    public Product createProduct(ProductDTO productDTO, MultipartFile file) {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        String image = imageClient.upload(file);
+        product.setImage(image);
+        product.setStock(productDTO.getStock());
         return productRepository.save(product);
     }
 

@@ -10,8 +10,8 @@
     </parent>
     <groupId>me.emma</groupId>
     <artifactId>OrderService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>OrderService</name>
+    <version>0.0.1</version>
+    <name>order-service</name>
     <description>OrderService</description>
     <url/>
     <licenses>
@@ -100,7 +100,21 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
+        <plugins><plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>3.4.1</version>
+            <configuration>
+                <to>
+                    <image>group2/${project.name}:${project.version}</image>
+                </to>
+                <container>
+                    <jvmFlags>
+                        <jvmFlag>-Dspring.profiles.active=prod</jvmFlag>
+                    </jvmFlags>
+                </container>
+            </configuration>
+        </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

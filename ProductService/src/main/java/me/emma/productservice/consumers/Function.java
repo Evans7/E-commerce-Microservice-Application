@@ -3,6 +3,7 @@ package me.emma.productservice.consumers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.emma.productservice.entity.OrderPlacedEvent;
+import me.emma.productservice.feign.ImageClient;
 import me.emma.productservice.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,13 @@ import java.util.function.Consumer;
 public class Function {
 
     private final ProductService productService;
+    private final ImageClient imageClient;
 
     @Bean
-    public Consumer<Long> productResponse() {
-        return (Long id) -> {
-            System.out.println("Received product ID to delete image from image service: " + id);
+    public Consumer<String> productResponse() {
+        return (String image) -> {
+            imageClient.deleteImage(image);
+            System.out.println("Received product ID to delete image from image service: " + image);
         };
     }
 
