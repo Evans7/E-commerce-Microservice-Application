@@ -40,8 +40,13 @@ public class AdminService {
     public void deleteProduct(Long id){
         log.info("Sending data to product service");
         String image = productClient.getProductById(id).getImage();
-        streamBridge.send("sendDeletedProduct-out-0", image);
-         productClient.deleteProduct(id);
+
+        // Get the part of the URL after the last '/'
+        String imageName = image.substring(image.lastIndexOf('/') + 1);
+        log.info(imageName);
+
+        streamBridge.send("sendDeletedProduct-out-0", imageName);
+        productClient.deleteProduct(id);
     }
 
 }

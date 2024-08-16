@@ -17,7 +17,7 @@ public interface ImageClient {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     String upload(@RequestPart("file") MultipartFile file);
 
-    @DeleteMapping(value = "/delete/{image}")
+    @DeleteMapping(value = "images/delete/{image}")
     String deleteImage(@PathVariable String image);
 
 }

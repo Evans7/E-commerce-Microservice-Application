@@ -24,8 +24,9 @@ public class Function {
     @Bean
     public Consumer<String> productResponse() {
         return (String image) -> {
-            imageClient.deleteImage(image);
             System.out.println("Received image to delete image from image service: " + image);
+            log.info(image);
+            imageClient.deleteImage(image);
         };
     }
 
