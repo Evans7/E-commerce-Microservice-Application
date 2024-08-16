@@ -1,16 +1,22 @@
 <section>
+  @if(added) {
+    <div class="notification-banner">
+      product added to cart
+    </div>
+  }
+
     <div class="search-container">
-      <!-- <input 
+      <input 
         type="text" 
         [formControl]="searchControl" 
-        placeholder="Search events by keyword..."
+        placeholder="Search products by name..."
         class="search-input"
-      /> -->
+      />
     </div>
 <div class="event-container">
  
 
-    @for(p of products; track p.id){
+    @for(p of filteredProducts; track p.id){
         <div class="event-card">
             <img [src]="p.image" alt="{{ p.name }}" class="event-image"  width="300"
             height="200">
@@ -18,7 +24,23 @@
               <h3>{{ p.name }}</h3>
               <p> {{ p.description }}</p>
               <p> price: {{ p.price }}</p>
-              
+              <div class="flex-group">
+
+
+          <!-- Quantity Management Section -->
+          <div class="quantity-container">
+            <button (click)="decreaseQuantity(p.id)" class="quantity-btn">-</button>
+            <span class="quantity-value">{{ productQuantities[p.id] }}</span>
+            <button (click)="increaseQuantity(p.id)" class="quantity-btn">+</button>
+          </div>
+                
+                <!-- <div class="quantity-container">
+                  <button (click)="decreaseQuantity()" class="quantity-btn">-</button>
+                  <span class="quantity-value">{{ p.quantity }}</span>
+                  <button (click)="increaseQuantity()" class="quantity-btn">+</button>
+                </div> -->
+              <button (click)="addToCart(p)" class="add-to-cart-btn">Add to Cart</button>
+            </div>
             </div>
           </div>
 }

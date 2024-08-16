@@ -1,0 +1,88 @@
+.cart-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .empty-cart {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+  }
+  
+  .cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .cart-item-image {
+    max-height: 100px;
+    margin-right: 15px;
+    border-radius: 8px;
+  }
+  
+  .cart-item-details {
+    flex: 1;
+  }
+  
+  .cart-item-details h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .cart-item-details p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .place-order-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .place-order-btn {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .place-order-btn:hover {
+    background-color: #e64a19;
+  }
+  
+
+  .notification-banner {
+    position: sticky;
+    z-index: 1;
+    padding: 1rem;
+    width: 100%;
+    top: 1rem;
+    /* margin-bottom: 1.5rem; */
+    border: 1px solid #cc5500; /* Burnt Orange */
+    background-color: #fbe6da;
+    color: #cc5500;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+  }
+  

@@ -83,4 +83,57 @@ section {
     .event-details a:hover {
       color: #ff7f24;
     }
+  
     
+
+.notification-banner {
+  position: sticky;
+  z-index: 1;
+  padding: 1rem;
+  width: 100%;
+  top: 1rem;
+  /* margin-bottom: 1.5rem; */
+  border: 1px solid #cc5500; /* Burnt Orange */
+  background-color: #fbe6da;
+  color: #cc5500;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+/* Add styles for quantity management section */
+.quantity-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.quantity-btn {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantity-btn:hover {
+  background-color: #e64a19;
+}
+
+.quantity-value {
+  font-size: 18px;
+  margin: 0 10px;
+  width: 40px;
+  text-align: center;
+}
+
+
+.flex-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

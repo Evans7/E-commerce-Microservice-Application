@@ -15,7 +15,7 @@ export const routes: Routes = [
         component: ProductsComponent,
       },
       {
-        path: 'Cart',
+        path: 'cart',
         component: CartComponent,
       },
   

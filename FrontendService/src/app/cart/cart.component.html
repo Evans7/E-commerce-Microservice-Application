@@ -1,1 +1,29 @@
-<p>cart works!</p>
+<section class="cart-container">
+    @if(submitted) {
+        <div class="notification-banner">
+          Order submitted successfully
+        </div>
+      }
+    <h2>Your Cart</h2>
+    
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
+      <p>Your cart is empty.</p>
+    </div>
+    
+    <div *ngIf="cartItems.length > 0" class="cart-list">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <img [src]="item.image" alt="{{ item.name }}" class="cart-item-image">
+        <div class="cart-item-details">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.description }}</p>
+          <p><strong>Price:</strong> {{ item.price  }}</p>
+          <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="cartItems.length > 0" class="place-order-container">
+      <button class="place-order-btn" (click)="placeOrder()">Place Order</button>
+    </div>
+  </section>
+  

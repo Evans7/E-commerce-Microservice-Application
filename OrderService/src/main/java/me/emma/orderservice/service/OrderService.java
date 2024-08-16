@@ -10,6 +10,7 @@ import me.emma.orderservice.pojo.entity.OrderItem;
 import me.emma.orderservice.pojo.entity.Orders;
 import me.emma.orderservice.repository.OrderItemRepository;
 import me.emma.orderservice.repository.OrdersRepository;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,10 @@ public class OrderService {
         orders = ordersRepository.save(orders);
         List<OrderItem> orderItems = new ArrayList<>();
         for (CartItem item : items) {
+            log.info(String.valueOf(item));
             OrderItem orderItem = new OrderItem();
             Product product = productClient.getProductById(item.getProductId());
+
             orderItem.setOrders(orders);
             orderItem.setProductId(item.getProductId());
             orderItem.setQuantity(item.getQuantity());
