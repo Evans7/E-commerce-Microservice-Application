@@ -20,8 +20,7 @@ public interface ProductClient {
     Product getProductById(@PathVariable Long id);
 
     @PostMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    Product createProduct(@RequestPart("productDTO") ProductDTO productDTO,
-                          @RequestPart("file") MultipartFile file);
+    Product createProduct(@RequestBody Product product);
 
     @PutMapping("products")
     Product updateProduct(@RequestBody Product product);

@@ -36,11 +36,9 @@ public class AdminController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(value = "/product", consumes = MediaType.)
-    public Product createAdminProduct(@RequestPart("productDTO") ProductDTO productDTO,
-                                      @RequestPart("file") MultipartFile file) {
-
-        return adminService.createProduct(productDTO, file);
+    @PostMapping(value = "/product")
+    public Product createAdminProduct(@RequestBody Product product) {
+        return adminService.createProduct(product);
     }
 
 

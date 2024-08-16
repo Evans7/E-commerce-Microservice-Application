@@ -36,12 +36,7 @@ public class ProductService {
 //        return response.getBody();
 //    }
 
-    public Product createProduct(ProductDTO productDTO, MultipartFile file) {
-        Product product = new Product();
-        BeanUtils.copyProperties(productDTO, product);
-        String image = imageClient.upload(file);
-        product.setImage(image);
-        product.setStock(productDTO.getStock());
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 

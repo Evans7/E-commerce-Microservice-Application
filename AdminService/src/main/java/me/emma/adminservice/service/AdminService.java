@@ -30,8 +30,8 @@ public class AdminService {
         return Optional.ofNullable(productClient.getProductById(id));
     }
 
-    public Product createProduct(ProductDTO productDTO, MultipartFile file){
-        return productClient.createProduct(productDTO, file);
+    public Product createProduct(Product product){
+        return productClient.createProduct(product);
     }
 
     public Product updateProduct(Product product){

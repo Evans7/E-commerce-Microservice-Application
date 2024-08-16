@@ -25,7 +25,7 @@ public class Function {
     public Consumer<String> productResponse() {
         return (String image) -> {
             imageClient.deleteImage(image);
-            System.out.println("Received product ID to delete image from image service: " + image);
+            System.out.println("Received image to delete image from image service: " + image);
         };
     }
 

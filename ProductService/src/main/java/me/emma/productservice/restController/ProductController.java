@@ -35,10 +35,9 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Product createProduct(@RequestPart("productDTO") ProductDTO productDTO,
-                                 @RequestPart("file") MultipartFile file) {
+    public Product createProduct(@RequestBody Product product) {
 
-        return productService.createProduct(productDTO,file);
+        return productService.createProduct(product);
     }
 
 //    @PostMapping("/imageUpload")

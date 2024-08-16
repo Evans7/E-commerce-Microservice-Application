@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping()
+@RequestMapping("images")
 @Slf4j
 @AllArgsConstructor
+
 public class UploadController {
 
     private S3Util s3Util;
